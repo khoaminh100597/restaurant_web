@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Manage my restaurants{% endblock %}
+{% block content %}
+{% if user.username == host %}
+<h1 style="text-align:right">
+<a href="{% url 'addrestaurant' slug=user.username %}">
+Add restaurant
+</a>
+</h1>
+<table class="table table-hover">
+<thead>
+    <tr>
+      <th scope="col">Type</th>
+      <th scope="col">Name</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for restaurant in restaurants %}
+    <tr class="table-active">
+      <th scope="row">Active</th>
+
+      <td>{{ restaurant.name }}</td>
+      <td><a href="{% url 'editrestaurant' slug=user.username pk=restaurant.pk %}"><span class="icon-large icon-edit"></span></a></td>
+      <td><a href="{% url 'deleterestaurant' slug=user.username pk=restaurant.pk %}"><span class="icon-large icon-remove"></span></a></td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<div class="alert alert-dismissible alert-danger">You don't have permission to see this</div>
+{% endif %}
+{% endblock %}

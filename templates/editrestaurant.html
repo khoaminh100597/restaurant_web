@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit My Restaurant{% endblock %}
+{% block content %}
+{% if user.username == host %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary btn-lg btn-block" name="edit_res">Change</button>
+</form>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form_img|crispy }}
+    <button type="submit" class="btn btn-primary btn-lg btn-block" name="add_img">Add image</button>
+</form>
+{% for img in img_res %}
+    <div class="container">
+        <img src="/media/{{ img.image }}" width="200px" height="200px">
+        <a class="btn btn-secondary" href="{% url 'deleteimgrestaurant' host img.pk %}" role="button">Delete &raquo;</a>
+    </div>
+{% endfor %}
+{% else %}
+<div class="alert alert-dismissible alert-danger">You don't have permission to see this</div>
+{% endif %}
+{% endblock %}

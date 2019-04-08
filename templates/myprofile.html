@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}My profile{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+    <div style="text-align: center">
+        <h3><strong>Username:</strong></h3>
+        <h4>{{ user.username }}</h4>
+        <h3><strong>Email:</strong></h3>
+        <h4>{{ user.email }}</h4>
+        <h3><strong>Phone:</strong></h3>
+        <h4>{{ user.phone }}</h4>
+        <h3><strong>Avatar:</strong></h3>
+        <img src="/media/{{ user.avatar }}" width="200px" height="200px">
+    </div>
+    <a href="{% url 'editprofile' user.username %}"><button type="button" class="btn btn-info btn-lg btn-block">Edit my profile</button></a>
+    <a href="{% url 'deleteprofile' user.username %}"><button type="button" class="btn btn-danger btn-lg btn-block">Delete my profile</button></a>
+    {% if user.is_restaurant %}
+    <a href="{% url 'managerestaurants' user.username%}"><button type="button" class="btn btn-primary btn-lg btn-block">Manage my restaurants</button></a>
+    {% endif %}
+    {% endif %}
+{% endblock %}

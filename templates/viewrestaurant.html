@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}{{ restaurant.name }}{% endblock %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-3">{{ restaurant.name }}</h1>
+  <p class="lead">Kind of restaurant: {{ restaurant.kind_of_restaurant }}</p>
+  <hr class="my-4">
+  <p>Phone number: {{ restaurant.phone }}</p>
+  <p>Address: {{ restaurant.address }}</p>
+  <p>Description: {{ restaurant.description }}</p>
+  {% if user.is_authenticated and user != host %}
+  <p class="lead">
+    <form method="post" action="{% url 'like_restaurant_from_restaurant' restaurant.id %}">
+            {% csrf_token %}
+            {% if is_liked %}
+            <button type="submit" name="restaurant_id" value="{{ restaurant.id }}" class="btn btn-danger">Dislike</button>
+            {% else %}
+            <button type="submit" name="restaurant_id" value="{{ restaurant.id }}" class="btn btn-primary">Like</button>
+            {% endif %}
+    </form>
+  </p>
+  {% endif %}
+  <p>Likes: {{ likes }}</p>
+  {% for img in images %}
+  <img src="/media/{{ img.image }}" width="200px" height="200px" alt="Don't have any images">
+{% endfor %}
+{% if user == host %}
+<h1 style="text-align:right">
+<a href="{% url 'addfood' pk=restaurant.pk %}">Add Food</a>
+</h1>
+{% endif %}
+<table class="table table-hover">
+<thead>
+    <tr>
+      <th scope="col">Type</th>
+      <th scope="col">Food</th>
+      {% if user == host %}
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for food in foods %}
+    <tr class="table-active">
+      <th scope="row">Active</th>
+      <td><a href="{% url 'viewfood' pk=food.pk %}">{{ food.name }}</a></td>
+      {% if user == host %}
+      <td><a href="{% url 'editfood' pk1=restaurant.pk pk2=food.pk %}"><span class="icon-large icon-edit"></span></a></td>
+      <td><a href="{% url 'deletefood' pk1=restaurant.pk pk2=food.pk %}"><span class="icon-large icon-remove"></span></a></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

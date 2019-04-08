@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}{{ food.name }}{% endblock %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-3">{{ food.name }}</h1>
+  <p class="lead">Restaurant: {{ food.restaurant.name }}</p>
+  <hr class="my-4">
+  <p>Detail {{ food.detail }}</p>
+  <p>Price: {{ food.price }}</p>
+  <p>Tags:</p>
+  {% for tag in tags %}
+    <span class="w3-tag w3-xlarge"">{{ tag }}</span>
+  {% endfor %}
+  <div>
+  {% for img in img_food %}
+  <img src="/media/{{img.image}}" alt="This Food don't have image" width="100px">
+  {% endfor %}
+  </div>
+</div>
+<h2>Score
+<span class="w3-tag w3-spin w3-large">{{ food.score }}</span>
+</h2>
+<form method="post" action="{% url 'ratingfood' food.pk %}">
+  {% csrf_token %}
+  <button type="submit" name="food_id" value="{{ food.id }}" class="btn btn-primary">Review</button>
+  <fieldset class="starability-growRotate">
+  {% csrf_token %}
+    <legend>Rate: </legend>
+
+
+
+    <input type="radio" id="rate1" name="rating" value="1" />
+
+    <label for="rate1" title="Terrible">1 stars</label>
+
+
+
+    <input type="radio" id="rate2" name="rating" value="2" />
+
+    <label for="rate2" title="Not good">2 stars</label>
+
+
+    <input type="radio" id="rate3" name="rating" value="3" />
+
+    <label for="rate3" title="Average">3 stars</label>
+
+
+    <input type="radio" id="rate4" name="rating" value="4" />
+
+    <label for="rate4" title="Very good">4 stars</label>
+
+
+    <input type="radio" id="rate5" name="rating" value="5" />
+
+    <label for="rate5" title="Amazing">5 star</label>
+
+  </fieldset>
+
+</form>
+<h2>Star Rating</h2>
+<div>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+{{ point.1 }} peoples review
+</div>
+<div>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+{{ point.2 }} peoples review
+</div>
+<div>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star"></span>
+{{ point.3 }} peoples review
+</div>
+<div>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+{{ point.4 }} peoples review
+</div>
+<div>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+{{ point.5 }} peoples review
+</div>
+{% endblock %}

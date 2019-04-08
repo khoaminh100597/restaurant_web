@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for r in res %}
+<hr class="featurette-divider">
+    <div class="row featurette">
+      <div class="col-md-7">
+        <a href="{% url 'viewrestaurant' pk=r.id %}"><h2 class="featurette-heading">{{ r.name }}</h2></a>
+        <p class="lead">Phone number: {{ r.phone }}</p>
+        <p class="lead">Kind of restaurant: {{ r.kind }}</p>
+        <p class="lead">Likes: {{ r.likes }}</p>
+        {{ r.customuser }}
+        {% if user.is_authenticated and user != r.customuser %}
+        <form method="post" action="{% url 'like_restaurant' %}">
+            {% csrf_token %}
+            {% if r.is_liked %}
+            <button type="submit" name="restaurant_id" value="{{ r.id }}" class="btn btn-danger">Dislike</button>
+            {% else %}
+            <button type="submit" name="restaurant_id" value="{{ r.id }}" class="btn btn-primary">Like</button>
+            {% endif %}
+        </form>
+      </div>
+      {% endif %}
+      <div class="col-md-2">
+          <img src="/media/{{ r.avatar }}" width="200px" height="200px" alt="Avatar of restaurant">
+      </div>
+    </div>
+{% endfor %}
+{% endblock %}
